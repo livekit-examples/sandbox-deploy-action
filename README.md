@@ -4,7 +4,8 @@ A reusable GitHub Action to deploy a LiveKit Sandbox instance to a target produc
 
 ## Inputs
 
-- `production_branch`: The branch to mirror the `main` branch to. Default is `sandbox-production`.
+- `token`: A GitHub token with permissions to push to the repository.
+- `production_branch` (optional): The branch to mirror the `main` branch to. Default is `sandbox-production`.
 
 ## Versioning
 
