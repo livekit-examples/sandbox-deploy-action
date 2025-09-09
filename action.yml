@@ -57,6 +57,9 @@ runs:
       run: |
         # Increment version tag from previous tag of format vX, or use v1 if no previous tag
         VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' | awk -F. -v OFS=. '{$NF++;print}')
+        if [ -z "$VERSION" ]; then
+          VERSION="1"
+        fi
         git tag -a "v$VERSION" -m "Deploy v$VERSION to production"
         git push origin "v$VERSION"
       shell: bash
