@@ -16,6 +16,10 @@ name: Sync main to production branch
 description: Sync main branch to specified production branch and increment the version tag.
 
 inputs:
+  token:
+    description: 'GitHub token for authentication'
+    type: string
+    required: true
   production_branch:
     description: 'The production branch to sync to'
     type: string
@@ -29,7 +33,6 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Fetch all history so we can force push
-      shell: bash
 
     - name: Set up Git
       run: |
@@ -39,7 +42,7 @@ runs:
 
     - name: Sync to production branch
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.token }}
         PRODUCTION_BRANCH: ${{ inputs.production_branch }}
       run: |
         git checkout "$PRODUCTION_BRANCH" || git checkout -b "$PRODUCTION_BRANCH"
@@ -50,7 +53,7 @@ runs:
     - name: Tag the deployment
       if: ${{ github.ref == 'refs/heads/main' }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         # Increment version tag from previous tag of format vX, or use v1 if no previous tag
         VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' | awk -F. -v OFS=. '{$NF++;print}')
