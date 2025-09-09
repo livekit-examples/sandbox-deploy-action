@@ -40,10 +40,11 @@ runs:
     - name: Sync to production branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PRODUCTION_BRANCH: ${{ inputs.production_branch }}
       run: |
-        git checkout ${{ inputs.production_branch }} || git checkout -b ${{ inputs.production_branch }}
+        git checkout "$PRODUCTION_BRANCH" || git checkout -b "$PRODUCTION_BRANCH"
         git merge --strategy-option theirs main
-        git push origin ${{ inputs.production_branch }}
+        git push origin "$PRODUCTION_BRANCH"
       shell: bash
 
     - name: Tag the deployment
