@@ -15,12 +15,14 @@
 name: Sync main to production branch
 description: Sync main branch to specified production branch and increment the version tag.
 
-inputs:
-  production_branch:
-    description: 'The production branch to sync to'
-    type: string
-    required: false
-    default: 'sandbox-production'
+on:
+  workflow_call:
+    inputs:
+      production_branch:
+        description: 'The production branch to sync to'
+        type: string
+        required: false
+        default: 'sandbox-production'
 
 runs:
   using: composite
